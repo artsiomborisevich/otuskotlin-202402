@@ -1,15 +1,6 @@
-pluginManagement {
-    val kotlinVersion: String by settings
+rootProject.name = "otuskotlin-kotlinwiz-202402"
 
-    plugins {
-        kotlin("jvm") version kotlinVersion
-    }
-}
+includeBuild("build-plugin")
+includeBuild("lessons")
+includeBuild("kotlin-wiz")
 
-plugins {
-    id("org.gradle.toolchains.foojay-resolver-convention") version "0.5.0"
-}
-
-rootProject.name = "otuskotlin-marketplace-202402"
-
-include("m1l1-first")
