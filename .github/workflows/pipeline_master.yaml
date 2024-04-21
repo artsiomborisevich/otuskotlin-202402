@@ -19,6 +19,10 @@ jobs:
       REPO: ${{ github.repository }}
       IMAGE_NAME: "kotlin-wiz"
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      repository-projects: write
+      packages: write
     steps:
       - name: Get files from repo
         uses: actions/checkout@v4
@@ -35,17 +39,11 @@ jobs:
       - name: Validate Gradle wrapper
         uses: gradle/wrapper-validation-action@v1
 
-      - name: Run Tests
-        uses: gradle/gradle-build-action@v2
+      - name: Run Tests and Build
+        uses: gradle/setup-gradle@v3
         with:
           gradle-version: 8.5
           arguments: check -i build
-
-#      - name: Build JAR with Gradle
-#        uses:  gradle/setup-gradle@v3
-#        with:
-#          gradle-version: 8.5
-#          arguments: build
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
@@ -56,11 +54,6 @@ jobs:
 
       - name: Set up Docker
         uses: docker/setup-buildx-action@v2
-
-      - name: List contents of directories to check the location of JAR file
-        run: |
-          ls -la kotlin-wiz/wiz-service && \
-          ls -la kotlin-wiz/wiz-service/build 
 
       - name: Build and push
         id: push
