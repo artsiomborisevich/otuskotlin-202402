@@ -28,7 +28,7 @@ RUN mkdir /app && \
 
 USER 1000
 
-ARG JAR_FILE=kotlin-wiz/wiz-service/build/libs/wiz-service-0.0.1.jar
+ARG JAR_FILE=kotlin-wiz/wiz-service/build/libs/wiz-service-*.jar
 COPY --chown=1000:1000 ${JAR_FILE} /app/kotlinwiz.jar
 WORKDIR /app
 

@@ -51,6 +51,13 @@ jobs:
       - name: Set up Docker
         uses: docker/setup-buildx-action@v2
 
+      - name: List contents of directories to check the location of JAR file
+        run: |
+          ls -la . && \
+          ls -la /app && \
+          ls -la /kotlin-wiz && \
+          ls -la /kotlin-wiz/wiz-service/build/libs
+
       - name: Build and push
         id: push
         uses: docker/build-push-action@v3
