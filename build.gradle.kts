@@ -23,4 +23,9 @@ tasks {
         group = "verification"
         dependsOn(gradle.includedBuild("kotlin-wiz").task(":check"))
     }
+
+    create("build") {
+        group = "build"
+        dependsOn(gradle.includedBuild("kotlin-wiz").task(":build"))
+    }
 }
