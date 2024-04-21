@@ -39,12 +39,13 @@ jobs:
         uses: gradle/gradle-build-action@v2
         with:
           gradle-version: 8.5
-          arguments: check -i
+          arguments: check -i build
 
-      - name: Build JAR with Gradle
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: build
+#      - name: Build JAR with Gradle
+#        uses:  gradle/setup-gradle@v3
+#        with:
+#          gradle-version: 8.5
+#          arguments: build
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
