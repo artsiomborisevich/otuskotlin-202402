@@ -1,5 +1,5 @@
 # Base image to build a JRE
-FROM eclipse-temurin:21 AS jre-build
+FROM eclipse-temurin:17 AS jre-build
 
 # Custom Java runtime
 RUN $JAVA_HOME/bin/jlink \
@@ -20,7 +20,7 @@ COPY --from=jre-build /javaruntime $JAVA_HOME
 
 # Add app user
 ARG APPLICATION_USER=appuser
-RUN adduser --no-create-home -u 1000 -D $APPLICATION_USER
+RUN adduser --no-create-home -u 1000 --disabled-login ${APPLICATION_USER}
 
 # Configure working directory
 RUN mkdir /app && \
@@ -28,7 +28,7 @@ RUN mkdir /app && \
 
 USER 1000
 
-ARG JAR_FILE=target/KotlinWiz-1.0.0.jar
+ARG JAR_FILE=kotlin-wiz/wiz-service/build/libs/wiz-service-0.0.1.jar
 COPY --chown=1000:1000 ${JAR_FILE} /app/kotlinwiz.jar
 WORKDIR /app
 
