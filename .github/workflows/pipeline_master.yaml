@@ -53,9 +53,8 @@ jobs:
 
       - name: List contents of directories to check the location of JAR file
         run: |
-          ls -la kotlin-wiz && \
           ls -la kotlin-wiz/wiz-service && \
-          ls -la kotlin-wiz/wiz-service/build/libs
+          ls -la kotlin-wiz/wiz-service/build 
 
       - name: Build and push
         id: push
