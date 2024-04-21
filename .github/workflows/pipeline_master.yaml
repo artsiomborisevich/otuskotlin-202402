@@ -17,6 +17,7 @@ jobs:
     env:
       USER: ${{ github.actor }}
       REPO: ${{ github.repository }}
+      IMAGE_NAME: "kotlin-wiz"
     runs-on: ubuntu-latest
     steps:
       - name: Get files from repo
@@ -57,4 +58,4 @@ jobs:
           context: .
           push: true
           tags: |
-            ghcr.io/${{ env.REPO }}:${{ github.ref_name }}
+            ghcr.io/${{ github.actor }}/${{ env.IMAGE_NAME }}:latest
