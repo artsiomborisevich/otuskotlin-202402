@@ -40,7 +40,7 @@ jobs:
         uses: gradle/wrapper-validation-action@v1
 
       - name: Run Tests and Build
-        uses: gradle/setup-gradle@v3
+        uses: gradle/gradle-build-action@v3
         with:
           gradle-version: 8.5
           arguments: check -i build
