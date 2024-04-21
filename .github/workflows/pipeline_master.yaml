@@ -13,7 +13,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  docker:
+  build:
     env:
       USER: ${{ github.actor }}
       REPO: ${{ github.repository }}
@@ -53,10 +53,9 @@ jobs:
 
       - name: List contents of directories to check the location of JAR file
         run: |
-          ls -la . && \
-          ls -la /app && \
-          ls -la /kotlin-wiz && \
-          ls -la /kotlin-wiz/wiz-service/build/libs
+          ls -la kotlin-wiz && \
+          ls -la kotlin-wiz/wiz-service && \
+          ls -la kotlin-wiz/wiz-service/build/libs
 
       - name: Build and push
         id: push
