@@ -30,19 +30,25 @@ Below is a more detailed breakdown of the intended target audience for this Tele
 - **Tech Enthusiasts**: Hobbyists and tech enthusiasts who have an interest in modern programming languages and want to stay updated with the current trends.
 - **Life-long Learners**: Individuals committed to continuous learning and improving their coding skills, leveraging the AI-assisted interaction that the bot provides.
 
-The bot's accessibility via Telegram makes it convenient for users who frequently use the messaging platform and prefer an integrated learning experience within their communication tool of choice. Users from various backgrounds and skill levels can benefit from the bot's interactive methods to study and refine their Kotlin skills at their own pace and according to their own learning styles.
+### Why this app?
+
+- Accessibility: The bot's accessibility via Telegram makes it convenient for users who frequently use the messaging platform and prefer an integrated learning experience within their communication tool of choice.
+- Customization: Quiz bot could offer personalized learning paths based on the user's existing knowledge and goals.
+- Integration with LLM: the use of language learning models to provide smart, contextual hints or explanations, which sets your bot apart from simple Q&A quizzes.
 
 ## Entity descriptions
 
 
 ---
+### Primary Entity
 #### Quiz Item
 - Question_ID (Primary key): A unique identifier for the question.
 - Question: The content of the quiz question.
 - Choices: Potential answers provided to the user.
 - Correct_Answer: The index or identifier of the correct answer.
 - Explanation: A brief explanation that can be provided after the answer is given.
-
+---
+### Auxiliary Entities
 #### Quiz Result
 - Result_ID (Primary key): A unique identifier for the quiz result record.
 - User_ID: Identifier to link the results to a specific user.
@@ -79,18 +85,23 @@ The bot's accessibility via Telegram makes it convenient for users who frequentl
 ### API
 
 ---
+### QUIZ ITEM CRUDS
+1. Create Question: Endpoint: /questions
+2.  Fetch Next Question: Endpoint: /questions/next/{conversationId}
+3. Update Question: Endpoint: /questions/{questionId}
+4.  Delete Question:  Endpoint: /questions/{questionId}
+5. Search question:  Endpoint: /questions/{questionId}
+
+
 1. Submit Answer: Allows the user to submit an answer to the current question.
 - Method: POST
 - Endpoint: /submit-answer
-2. Fetch Question: Retrieves the next question for the user.
-- Method: GET
-- Endpoint: /fetch-question/{conversationId}
 3. Get Explanation: Sends an explanation for the last answered question.
 - Method: GET
-- Endpoint: /get-explanation/{conversationId}
+- Endpoint: /explanation/{conversationId}
 4. Update Explanation: Updates the explanation for a given question. This endpoint would be protected and only accessible by authorized users such as administrators or content creators. 
 - Method: PUT
-- Endpoint: /update-explanation/{questionId}
+- Endpoint: /explanation/{questionId}
    
 ---
 
