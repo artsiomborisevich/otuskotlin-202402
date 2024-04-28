@@ -44,6 +44,7 @@ Below is a more detailed breakdown of the intended target audience for this Tele
 #### Quiz Item
 - Question_ID (Primary key): A unique identifier for the question.
 - Question: The content of the quiz question.
+- Level: The difficulty of the quiz question.
 - Choices: Potential answers provided to the user.
 - Correct_Answer: The index or identifier of the correct answer.
 - Explanation: A brief explanation that can be provided after the answer is given.
@@ -87,22 +88,12 @@ Below is a more detailed breakdown of the intended target audience for this Tele
 ---
 ### QUIZ ITEM CRUDS
 1. Create Question: Endpoint: /questions
-2.  Fetch Next Question: Endpoint: /questions/next/{conversationId}
+2.  Read Question: Endpoint: /questions/{questionId}
 3. Update Question: Endpoint: /questions/{questionId}
 4.  Delete Question:  Endpoint: /questions/{questionId}
-5. Search question:  Endpoint: /questions/{questionId}
+5. Search question:  Endpoint: /questions/{searchText}
 
 
-1. Submit Answer: Allows the user to submit an answer to the current question.
-- Method: POST
-- Endpoint: /submit-answer
-3. Get Explanation: Sends an explanation for the last answered question.
-- Method: GET
-- Endpoint: /explanation/{conversationId}
-4. Update Explanation: Updates the explanation for a given question. This endpoint would be protected and only accessible by authorized users such as administrators or content creators. 
-- Method: PUT
-- Endpoint: /explanation/{questionId}
-   
 ---
 
 ## Prerequisites

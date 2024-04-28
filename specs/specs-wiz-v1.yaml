@@ -1,0 +1,415 @@
+openapi: 3.0.3
+info:
+  title: "KotlinWiz ${VERSION_APP}"
+  description: Quizzes in Kotlin with the assistance of an AI-powered local language mode
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/v1
+tags:
+  - name: question
+    description: Quiz item
+paths:
+  /questions/create:
+    post:
+      tags:
+        - question
+      summary: Create question
+      operationId: questCreate
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuestionCreateRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuestionCreateResponse'
+  /questions/read:
+    post:
+      tags:
+        - question
+      summary: Read question
+      operationId: questRead
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuestionReadRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuestionReadResponse'
+  /questions/update:
+    post:
+      tags:
+        - question
+      summary: Update question
+      operationId: questUpdate
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuestionUpdateRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuestionUpdateResponse'
+  /questions/delete:
+    post:
+      tags:
+        - question
+      summary: Delete question
+      operationId: questionDelete
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuestionDeleteRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuestionDeleteResponse'
+  /questions/search:
+    post:
+      tags:
+        - question
+      summary: Search question
+      operationId: questionSearch
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuestionSearchRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuestionSearchResponse'
+
+components:
+  schemas:
+
+    IRequest:
+      type: object
+      description: Basic interface for all requests
+      properties:
+        requestType:
+          type: string
+          description: Discriminator field for calculating the request type
+          example: create
+      discriminator:
+        propertyName: requestType
+        mapping:
+          create: '#/components/schemas/QuestionCreateRequest'
+          read: '#/components/schemas/QuestionReadRequest'
+          update: '#/components/schemas/QuestionUpdateRequest'
+          delete: '#/components/schemas/QuestionDeleteRequest'
+          search: '#/components/schemas/QuestionSearchRequest'
+
+    IResponse:
+      type: object
+      description: Basic interface for all responses
+      properties:
+        responseType:
+          type: string
+          description: Discriminator field for calculating the response type
+          example: create
+        result:
+          $ref: '#/components/schemas/ResponseResult'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+      discriminator:
+        propertyName: responseType
+        mapping:
+          create: '#/components/schemas/QuestionCreateResponse'
+          read: '#/components/schemas/QuestionReadResponse'
+          update: '#/components/schemas/QuestionUpdateResponse'
+          delete: '#/components/schemas/QuestionDeleteResponse'
+          search: '#/components/schemas/QuestionSearchResponse'
+
+    ResponseResult:
+      type: string
+      enum:
+        - success
+        - error
+
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        group:
+          type: string
+        field:
+          type: string
+        message:
+          type: string
+
+    UserId:
+      type: string
+      description: The identifier of the user
+    QuestionId:
+      type: string
+      description: The identifier of the question
+    QuestionLock:
+      type: string
+      description: Optimistic lock version
+
+    BaseQuestion:
+      type: object
+      description: An object describes properties that are the same for create and update
+      properties:
+        text:
+          type: string
+          description: The content of the quiz question
+        answerOptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/AnswerOption'
+        answer:
+          type: string
+          description: The correct answer
+        explanation:
+          type: string
+          description: A brief explanation that can be provided after the answer is given
+        level:
+          $ref: '#/components/schemas/QuestionLevel'
+
+    QuestionLevel:
+      type: string
+      description: 'Difficulty level of the question. Possible levels - beginner, advanced, expert'
+      enum:
+        - beginner
+        - advanced
+        - expert
+
+    AnswerOption:
+      type: object
+      description: 'Option to answer question'
+      properties:
+        id:
+          type: string
+          format: integer
+          description: Unique ID of the response option
+        text:
+          type: string
+          description: Answer option text
+
+    QuestionCreateObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseQuestion'
+
+    QuestionCreateRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/QuestionRequestDebug'
+        - type: object
+          properties:
+            question:
+              $ref: '#/components/schemas/QuestionCreateObject'
+
+    QuestionReadObject:
+      allOf:
+        - type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/QuestionId'
+            userId:
+              $ref: '#/components/schemas/UserId'
+
+    QuestionReadRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/QuestionRequestDebug'
+        - type: object
+          properties:
+            question:
+              $ref: '#/components/schemas/QuestionReadObject'
+
+    QuestionUpdateObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseQuestion'
+        - type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/QuestionId'
+            lock:
+              $ref: '#/components/schemas/QuestionLock'
+
+    QuestionUpdateRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/QuestionRequestDebug'
+        - type: object
+          properties:
+            question:
+              $ref: '#/components/schemas/QuestionUpdateObject'
+
+    QuestionDeleteObject:
+      allOf:
+        - type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/QuestionId'
+            lock:
+              $ref: '#/components/schemas/QuestionLock'
+
+    QuestionDeleteRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/QuestionRequestDebug'
+        - type: object
+          properties:
+            question:
+              $ref: '#/components/schemas/QuestionDeleteObject'
+
+    QuestionSearchRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/QuestionRequestDebug'
+        - type: object
+          properties:
+            adFilter:
+              $ref: '#/components/schemas/QuestionSearchFilter'
+
+    QuestionSearchFilter:
+      type: object
+      description: A set of search filters
+      properties:
+        searchString:
+          type: string
+          description: Search string to be searched in questions
+
+    QuestionResponseObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseQuestion'
+        - type: object
+          description: The object that is returned in the backend response
+          properties:
+            id:
+              $ref: '#/components/schemas/QuestionId'
+            userId:
+              $ref: '#/components/schemas/UserId'
+            lock:
+              $ref: '#/components/schemas/QuestionLock'
+            permissions:
+              type: array
+              uniqueItems: true
+              items:
+                $ref: '#/components/schemas/QuestionPermissions'
+
+    QuestionPermissions:
+      type: string
+      description: Accesses for the users for operations on the question
+      enum:
+        - read
+        - update
+        - delete
+
+    QuestionResponseSingle:
+      allOf:
+        - type: object
+          description: Response with one question object
+          properties:
+            question:
+              $ref: '#/components/schemas/QuestionResponseObject'
+
+    QuestionResponseMulti:
+      allOf:
+        - type: object
+          description: List of questions
+          properties:
+            questions:
+              type: array
+              items:
+                $ref: '#/components/schemas/QuestionResponseObject'
+
+    QuestionCreateResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/QuestionResponseSingle'
+
+    QuestionReadResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/QuestionResponseSingle'
+
+    QuestionUpdateResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/QuestionResponseSingle'
+
+    QuestionDeleteResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/QuestionResponseSingle'
+
+    QuestionSearchResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/QuestionResponseMulti'
+
+    # STUBS ======================
+    QuestionRequestDebug:
+      type: object
+      properties:
+        debug:
+          $ref: '#/components/schemas/QuestionDebug'
+
+    QuestionDebug:
+      type: object
+      properties:
+        mode:
+          $ref: '#/components/schemas/QuestionRequestDebugMode'
+        stub:
+          $ref: '#/components/schemas/QuestionRequestDebugStubs'
+
+    QuestionRequestDebugMode:
+      type: string
+      enum:
+        - prod
+        - test
+        - stub
+
+    QuestionRequestDebugStubs:
+      type: string
+      description: List of all stubs
+      enum:
+        - success
+        - notFound
+        - badId
+        - badText
+        - badChoices
+        - badAnswer
+        - badExplanation
+        - cannotDelete
+        - badSearchString

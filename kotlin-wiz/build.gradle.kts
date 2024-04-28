@@ -3,7 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.multiplatform) apply false
 }
 
-group = "dev.arborisevich.otuskotlin.kotlin-wiz"
+group = "dev.arborisevich.otuskotlin.kotlinwiz"
 version = "0.0.1"
 
 subprojects {
@@ -15,19 +15,16 @@ subprojects {
     }
 }
 
-tasks {
-    create("build") {
-        group = "build"
-        dependsOn(project(":wiz-service").getTasksByName("build",false))
-    }
+ext {
+    val specDir = layout.projectDirectory.dir("../specs")
+    set("spec-v1", specDir.file("specs-wiz-v1.yaml").toString())
+}
 
-    create("check") {
-        group = "verification"
-        subprojects.forEach { proj ->
-            println("PROJ $proj")
-            proj.getTasksByName("check", false).also {
-                this@create.dependsOn(it)
-            }
+tasks {
+    arrayOf("build", "clean", "check").forEach {tsk ->
+        create(tsk) {
+            group = "build"
+            dependsOn(subprojects.map {  it.getTasksByName(tsk,false)})
         }
     }
 }

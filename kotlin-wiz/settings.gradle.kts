@@ -1,4 +1,4 @@
-rootProject.name = "kotlin-wiz"
+rootProject.name = "kotlinwiz"
 
 dependencyResolutionManagement {
     versionCatalogs {
@@ -26,3 +26,4 @@ plugins {
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 include(":wiz-service")
+include(":wiz-api-v1-jackson")
