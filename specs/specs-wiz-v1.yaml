@@ -218,7 +218,6 @@ components:
       properties:
         id:
           type: string
-          format: integer
           description: Unique ID of the response option
         text:
           type: string
@@ -298,7 +297,7 @@ components:
         - $ref: '#/components/schemas/QuestionRequestDebug'
         - type: object
           properties:
-            adFilter:
+            questionFilter:
               $ref: '#/components/schemas/QuestionSearchFilter'
 
     QuestionSearchFilter:
