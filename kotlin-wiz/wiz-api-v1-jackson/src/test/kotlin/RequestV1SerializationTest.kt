@@ -24,7 +24,7 @@ class RequestV1SerializationTest {
         question = QuestionCreateObject(
             text = "Question text",
             answer = "Question answer",
-            answerOptions = listOf(AnswerOption(1,"first option")),
+            answerOptions = listOf(AnswerOption("1","first option")),
             explanation = "Question explanation",
             level = QuestionLevel.BEGINNER,
         )
@@ -46,7 +46,7 @@ class RequestV1SerializationTest {
         assertContains(json, Regex("\"explanation\":\\s*\"Question explanation\""))
         assertContains(json, Regex("\"level\":\\s*\"beginner\""))
 
-        assertContainsReq(json, "\"answerOptions\":[{\"id\":1,\"text\":\"first option\"}]")
+        assertContainsReq(json, "\"answerOptions\":[{\"id\":\"1\",\"text\":\"first option\"}]")
     }
 
     private fun assertContainsReq(json: String, toFind: String) {
