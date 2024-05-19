@@ -1,4 +1,4 @@
-package models
+package dev.arborisevich.otuskotlin.kotlinwiz.common.models
 
 @JvmInline
 value class QuizQuestionId(private val id: String) {

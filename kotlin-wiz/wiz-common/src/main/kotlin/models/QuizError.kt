@@ -1,4 +1,4 @@
-package models
+package dev.arborisevich.otuskotlin.kotlinwiz.common.models
 
 data class QuizError(
     val code: String = "",

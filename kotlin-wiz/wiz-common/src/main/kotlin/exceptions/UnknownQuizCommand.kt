@@ -1,4 +1,5 @@
-package exceptions
+package dev.arborisevich.otuskotlin.kotlinwiz.common.exceptions
 
+import dev.arborisevich.otuskotlin.kotlinwiz.common.models.QuizCommand
 
-class UnknownQuizCommand(command: models.QuizCommand) : Throwable("Wrong command $command at mapping toTransport stage")
+class UnknownQuizCommand(command: QuizCommand) : Throwable("Wrong command $command at mapping toTransport stage")

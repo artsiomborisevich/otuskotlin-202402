@@ -1,4 +1,4 @@
-package stubs
+package dev.arborisevich.otuskotlin.kotlinwiz.common.stubs
 
 enum class QuizStubs {
     NONE,

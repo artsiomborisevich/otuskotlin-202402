@@ -1,6 +1,5 @@
-package ru.otus.otuskotlin.marketplace.mappers.v1
+package dev.arborisevich.otuskotlin.kotlinwiz.api.v1.mappers
 
-import QuizContext
 import dev.arborisevich.otuskotlin.kotlinwiz.api.v1.models.AnswerOption
 import dev.arborisevich.otuskotlin.kotlinwiz.api.v1.models.IRequest
 import dev.arborisevich.otuskotlin.kotlinwiz.api.v1.models.QuestionCreateObject
@@ -17,17 +16,18 @@ import dev.arborisevich.otuskotlin.kotlinwiz.api.v1.models.QuestionSearchFilter
 import dev.arborisevich.otuskotlin.kotlinwiz.api.v1.models.QuestionSearchRequest
 import dev.arborisevich.otuskotlin.kotlinwiz.api.v1.models.QuestionUpdateObject
 import dev.arborisevich.otuskotlin.kotlinwiz.api.v1.models.QuestionUpdateRequest
-import models.QuizAnswerOption
-import models.QuizCommand
-import models.QuizQuestion
-import models.QuizQuestionFilter
-import models.QuizQuestionId
-import models.QuizQuestionLevel
-import models.QuizQuestionLock
-import models.QuizUserId
-import models.QuizWorkMode
+import dev.arborisevich.otuskotlin.kotlinwiz.common.QuizContext
+import dev.arborisevich.otuskotlin.kotlinwiz.common.models.QuizAnswerOption
+import dev.arborisevich.otuskotlin.kotlinwiz.common.models.QuizCommand
+import dev.arborisevich.otuskotlin.kotlinwiz.common.models.QuizQuestion
+import dev.arborisevich.otuskotlin.kotlinwiz.common.models.QuizQuestionFilter
+import dev.arborisevich.otuskotlin.kotlinwiz.common.models.QuizQuestionId
+import dev.arborisevich.otuskotlin.kotlinwiz.common.models.QuizQuestionLevel
+import dev.arborisevich.otuskotlin.kotlinwiz.common.models.QuizQuestionLock
+import dev.arborisevich.otuskotlin.kotlinwiz.common.models.QuizUserId
+import dev.arborisevich.otuskotlin.kotlinwiz.common.models.QuizWorkMode
+import dev.arborisevich.otuskotlin.kotlinwiz.common.stubs.QuizStubs
 import ru.otus.otuskotlin.marketplace.mappers.v1.exceptions.UnknownRequestClass
-import stubs.QuizStubs
 
 fun QuizContext.fromTransport(request: IRequest) = when (request) {
     is QuestionCreateRequest -> fromTransport(request)

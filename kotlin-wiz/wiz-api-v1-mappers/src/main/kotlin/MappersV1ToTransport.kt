@@ -1,6 +1,5 @@
-package ru.otus.otuskotlin.marketplace.mappers.v1
+package dev.arborisevich.otuskotlin.kotlinwiz.api.v1.mappers
 
-import QuizContext
 import dev.arborisevich.otuskotlin.kotlinwiz.api.v1.models.AnswerOption
 import dev.arborisevich.otuskotlin.kotlinwiz.api.v1.models.Error
 import dev.arborisevich.otuskotlin.kotlinwiz.api.v1.models.IResponse
@@ -13,16 +12,17 @@ import dev.arborisevich.otuskotlin.kotlinwiz.api.v1.models.QuestionResponseObjec
 import dev.arborisevich.otuskotlin.kotlinwiz.api.v1.models.QuestionSearchResponse
 import dev.arborisevich.otuskotlin.kotlinwiz.api.v1.models.QuestionUpdateResponse
 import dev.arborisevich.otuskotlin.kotlinwiz.api.v1.models.ResponseResult
-import exceptions.UnknownQuizCommand
-import models.QuizAnswerOption
-import models.QuizCommand
-import models.QuizError
-import models.QuizQuestion
-import models.QuizQuestionId
-import models.QuizQuestionLevel
-import models.QuizQuestionPermissionsClient
-import models.QuizState
-import models.QuizUserId
+import dev.arborisevich.otuskotlin.kotlinwiz.common.QuizContext
+import dev.arborisevich.otuskotlin.kotlinwiz.common.exceptions.UnknownQuizCommand
+import dev.arborisevich.otuskotlin.kotlinwiz.common.models.QuizAnswerOption
+import dev.arborisevich.otuskotlin.kotlinwiz.common.models.QuizCommand
+import dev.arborisevich.otuskotlin.kotlinwiz.common.models.QuizError
+import dev.arborisevich.otuskotlin.kotlinwiz.common.models.QuizQuestion
+import dev.arborisevich.otuskotlin.kotlinwiz.common.models.QuizQuestionId
+import dev.arborisevich.otuskotlin.kotlinwiz.common.models.QuizQuestionLevel
+import dev.arborisevich.otuskotlin.kotlinwiz.common.models.QuizQuestionPermissionsClient
+import dev.arborisevich.otuskotlin.kotlinwiz.common.models.QuizState
+import dev.arborisevich.otuskotlin.kotlinwiz.common.models.QuizUserId
 
 fun QuizContext.toTransportQuestion(): IResponse = when (val cmd = command) {
     QuizCommand.CREATE -> toTransportCreate()

@@ -1,13 +1,15 @@
+package dev.arborisevich.otuskotlin.kotlinwiz.common
 
+import NONE
+import dev.arborisevich.otuskotlin.kotlinwiz.common.models.QuizCommand
+import dev.arborisevich.otuskotlin.kotlinwiz.common.models.QuizError
+import dev.arborisevich.otuskotlin.kotlinwiz.common.models.QuizQuestion
+import dev.arborisevich.otuskotlin.kotlinwiz.common.models.QuizQuestionFilter
+import dev.arborisevich.otuskotlin.kotlinwiz.common.models.QuizRequestId
+import dev.arborisevich.otuskotlin.kotlinwiz.common.models.QuizState
+import dev.arborisevich.otuskotlin.kotlinwiz.common.models.QuizWorkMode
+import dev.arborisevich.otuskotlin.kotlinwiz.common.stubs.QuizStubs
 import kotlinx.datetime.Instant
-import models.QuizCommand
-import models.QuizError
-import models.QuizQuestion
-import models.QuizQuestionFilter
-import models.QuizRequestId
-import models.QuizState
-import models.QuizWorkMode
-import stubs.QuizStubs
 
 data class QuizContext(
     var command: QuizCommand = QuizCommand.NONE,

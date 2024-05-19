@@ -1,5 +1,7 @@
+package dev.arborisevich.otuskotlin.kotlinwiz.api.v1.mappers.test
 
-
+import dev.arborisevich.otuskotlin.kotlinwiz.api.v1.mappers.fromTransport
+import dev.arborisevich.otuskotlin.kotlinwiz.api.v1.mappers.toTransportQuestion
 import dev.arborisevich.otuskotlin.kotlinwiz.api.v1.models.AnswerOption
 import dev.arborisevich.otuskotlin.kotlinwiz.api.v1.models.QuestionCreateObject
 import dev.arborisevich.otuskotlin.kotlinwiz.api.v1.models.QuestionCreateRequest
@@ -16,21 +18,20 @@ import dev.arborisevich.otuskotlin.kotlinwiz.api.v1.models.QuestionSearchFilter
 import dev.arborisevich.otuskotlin.kotlinwiz.api.v1.models.QuestionSearchRequest
 import dev.arborisevich.otuskotlin.kotlinwiz.api.v1.models.QuestionUpdateObject
 import dev.arborisevich.otuskotlin.kotlinwiz.api.v1.models.QuestionUpdateRequest
-import models.QuizAnswerOption
-import models.QuizCommand
-import models.QuizError
-import models.QuizQuestion
-import models.QuizQuestionId
-import models.QuizQuestionLevel
-import models.QuizQuestionLock
-import models.QuizRequestId
-import models.QuizState
-import models.QuizUserId
-import models.QuizWorkMode
+import dev.arborisevich.otuskotlin.kotlinwiz.common.QuizContext
+import dev.arborisevich.otuskotlin.kotlinwiz.common.models.QuizAnswerOption
+import dev.arborisevich.otuskotlin.kotlinwiz.common.models.QuizCommand
+import dev.arborisevich.otuskotlin.kotlinwiz.common.models.QuizError
+import dev.arborisevich.otuskotlin.kotlinwiz.common.models.QuizQuestion
+import dev.arborisevich.otuskotlin.kotlinwiz.common.models.QuizQuestionId
+import dev.arborisevich.otuskotlin.kotlinwiz.common.models.QuizQuestionLevel
+import dev.arborisevich.otuskotlin.kotlinwiz.common.models.QuizQuestionLock
+import dev.arborisevich.otuskotlin.kotlinwiz.common.models.QuizRequestId
+import dev.arborisevich.otuskotlin.kotlinwiz.common.models.QuizState
+import dev.arborisevich.otuskotlin.kotlinwiz.common.models.QuizUserId
+import dev.arborisevich.otuskotlin.kotlinwiz.common.models.QuizWorkMode
+import dev.arborisevich.otuskotlin.kotlinwiz.common.stubs.QuizStubs
 import org.junit.Test
-import ru.otus.otuskotlin.marketplace.mappers.v1.fromTransport
-import ru.otus.otuskotlin.marketplace.mappers.v1.toTransportQuestion
-import stubs.QuizStubs
 import kotlin.test.assertEquals
 
 class MapperTest {
