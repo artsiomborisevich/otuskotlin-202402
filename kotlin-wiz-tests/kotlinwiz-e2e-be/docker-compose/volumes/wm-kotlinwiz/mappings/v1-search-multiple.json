@@ -1,0 +1,70 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/v1/questions/search",
+    "bodyPatterns": [
+      {"matchesJsonPath" : "$.questionFilter[?(@.searchString == 'var')]"}
+    ]
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "responseType": "search",
+      "result": "success",
+      "questions": [
+        {
+          "id": "123",
+          "text": "{{{jsonPath request.body '$.question.text'}}}",
+          "answerOptions": [
+            {
+              "id": "opt1",
+              "text": "var"
+            },
+            {
+              "id": "opt2",
+              "text": "val"
+            },
+            {
+              "id": "opt3",
+              "text": "let"
+            },
+            {
+              "id": "opt4",
+              "text": "const"
+            }],
+          "answer": "var, val",
+          "explanation": "In Kotlin, 'var' is used to declare a mutable variable, while 'val' is used to declare an immutable variable.",
+          "level": "beginner"
+        },
+        {
+          "text": "What is the var in Kotlin?",
+          "answerOptions": [
+            {
+              "id": "opt1",
+              "text": "In Kotlin, 'var' is used to declare a mutable variable"
+            },
+            {
+              "id": "opt2",
+              "text": "In Kotlin, 'var' is used to declare a immutable variable"
+            },
+            {
+              "id": "opt3",
+              "text": "no such thing in Kotlin"
+            },
+            {
+              "id": "opt4",
+              "text": "Global variable"
+            }
+          ],
+          "answer": "In Kotlin, 'var' is used to declare a mutable variable",
+          "explanation": "In Kotlin, 'var' is used to declare a mutable variable explanation",
+          "level": "beginner",
+          "id": "kotlin_q2"
+        }
+      ]
+    },
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

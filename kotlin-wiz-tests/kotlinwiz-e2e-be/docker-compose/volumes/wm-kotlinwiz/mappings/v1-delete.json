@@ -1,0 +1,41 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/v1/questions/delete"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "responseType": "delete",
+      "result": "success",
+      "question": {
+        "id": "{{{jsonPath request.body '$.question.id'}}}",
+        "text": "What is the difference between var and val in Kotlin?",
+        "answerOptions": [
+          {
+            "id": "opt1",
+            "text": "var is mutable, val is immutable"
+          },
+          {
+            "id": "opt2",
+            "text": "val is mutable, var is immutable "
+          },
+          {
+            "id": "opt3",
+            "text": "no difference"
+          },
+          {
+            "id": "opt4",
+            "text": "var is const"
+          }],
+        "answer": "var is mutable, val is immutable",
+        "explanation": "In Kotlin, 'var' is used to declare a mutable variable, while 'val' is used to declare an immutable variable.",
+        "level": "beginner"
+      }
+    },
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "transformers": ["response-template"]
+  }
+}
