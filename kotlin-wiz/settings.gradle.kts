@@ -25,8 +25,14 @@ plugins {
 }
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
-include(":wiz-service")
 include(":wiz-api-v1-jackson")
 include(":wiz-api-v1-mappers")
+include(":wiz-api-log1")
 
 include(":wiz-common")
+include(":wiz-biz")
+include(":wiz-stubs")
+
+include(":wiz-app-common")
+include(":wiz-app-spring")
+include(":wiz-app-kafka")

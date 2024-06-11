@@ -1,0 +1,42 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/v1/questions/update"
+  },
+
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "responseType": "update",
+      "result": "success",
+      "question": {
+        "text": "What is the primary purpose of a data class in Kotlin?",
+        "answerOptions": [
+          {
+            "id": "1",
+            "text": "To create classes that are used solely for holding data"
+          },
+          {
+            "id": "2",
+            "text": "To define classes with custom behavior and logic"
+          },
+          {
+            "id": "3",
+            "text": "To define classes that can only be inherited from"
+          },
+          {
+            "id": "4",
+            "text": "To create classes that do not allow any properties"
+          }
+        ],
+        "answer": "To create classes that are used solely for holding data",
+        "explanation": "In Kotlin, a data class is used to hold data and provides automatically generated functions such as equals(), hashCode(), toString(), and copy().",
+        "level": "beginner",
+        "id": "kotlin_q3"
+      }
+    },
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}
