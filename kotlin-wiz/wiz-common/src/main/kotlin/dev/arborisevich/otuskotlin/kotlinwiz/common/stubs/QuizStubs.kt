@@ -8,7 +8,7 @@ enum class QuizStubs {
     BAD_TEXT,
     BAD_ANSWER,
     BAD_EXPLANATION,
-    BAD_CHOICES,
+    BAD_ANSWER_OPTIONS,
     CANNOT_DELETE,
     BAD_SEARCH_STRING,
     DB_ERROR,

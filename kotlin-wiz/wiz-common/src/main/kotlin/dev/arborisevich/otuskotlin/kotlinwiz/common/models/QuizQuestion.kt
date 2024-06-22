@@ -19,4 +19,9 @@ data class QuizQuestion(
         private val NONE = QuizQuestion()
     }
 
+    fun deepCopy(): QuizQuestion = copy(
+        answerOptions = answerOptions.toMutableList(),
+        permissionsClient = permissionsClient.toMutableSet(),
+    )
+
 }

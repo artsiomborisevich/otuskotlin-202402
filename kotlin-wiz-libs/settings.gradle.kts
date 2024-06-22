@@ -28,3 +28,5 @@ include(":kotlin-wiz-lib-logging-common")
 include(":kotlin-wiz-lib-logging-kermit")
 include(":kotlin-wiz-lib-logging-logback")
 include(":kotlin-wiz-lib-logging-socket")
+
+include(":kotlin-wiz-lib-cor")
