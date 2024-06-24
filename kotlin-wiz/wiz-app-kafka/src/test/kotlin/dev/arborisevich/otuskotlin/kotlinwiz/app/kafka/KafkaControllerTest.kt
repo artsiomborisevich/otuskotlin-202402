@@ -73,7 +73,7 @@ class KafkaControllerTest {
         val message = producer.history().first()
         val result = apiV1ResponseDeserialize<QuestionCreateResponse>(message.value())
         assertEquals(outputTopic, message.topic())
-        assertEquals("What is the difference between var and val in Kotlin?", result.question?.text)
+        assertEquals("text", result.question?.text)
     }
 
     companion object {

@@ -8,7 +8,10 @@ dependencies {
     implementation(libs.jackson.datatype)
     implementation(project(":wiz-common"))
     implementation(project(":wiz-stubs"))
+    implementation(libs.cor)
+
     testImplementation(kotlin("test-junit"))
+    testImplementation(libs.coroutines.test)
 }
 
 

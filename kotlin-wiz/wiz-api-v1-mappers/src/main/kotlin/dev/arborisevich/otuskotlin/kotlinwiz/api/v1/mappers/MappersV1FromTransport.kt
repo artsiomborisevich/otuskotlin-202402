@@ -51,7 +51,7 @@ private fun QuestionDebug?.transportToStubCase(): QuizStubs = when (this?.stub) 
     QuestionRequestDebugStubs.BAD_ID -> QuizStubs.BAD_ID
     QuestionRequestDebugStubs.BAD_TEXT -> QuizStubs.BAD_TEXT
     QuestionRequestDebugStubs.BAD_ANSWER -> QuizStubs.BAD_ANSWER
-    QuestionRequestDebugStubs.BAD_CHOICES -> QuizStubs.BAD_CHOICES
+    QuestionRequestDebugStubs.BAD_CHOICES -> QuizStubs.BAD_ANSWER_OPTIONS
     QuestionRequestDebugStubs.BAD_EXPLANATION -> QuizStubs.BAD_EXPLANATION
     QuestionRequestDebugStubs.CANNOT_DELETE -> QuizStubs.CANNOT_DELETE
     QuestionRequestDebugStubs.BAD_SEARCH_STRING -> QuizStubs.BAD_SEARCH_STRING

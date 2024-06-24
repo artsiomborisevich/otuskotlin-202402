@@ -11,10 +11,12 @@ import dev.arborisevich.otuskotlin.kotlinwiz.common.stubs.QuizStubs
 import kotlinx.datetime.Instant
 
 data class QuizContext(
+
     var command: QuizCommand = QuizCommand.NONE,
     var state: QuizState = QuizState.NONE,
     val errors: MutableList<QuizError> = mutableListOf(),
 
+    var corSettings: QuizCoreSettings = QuizCoreSettings(),
     var workMode: QuizWorkMode = QuizWorkMode.PROD,
     var stubCase: QuizStubs = QuizStubs.NONE,
 
@@ -23,7 +25,12 @@ data class QuizContext(
     var questionRequest: QuizQuestion = QuizQuestion(),
     var questionFilterRequest: QuizQuestionFilter = QuizQuestionFilter(),
 
+    var questionValidating: QuizQuestion = QuizQuestion(),
+    var questionFilterValidating: QuizQuestionFilter = QuizQuestionFilter(),
+
+    var questionValidated: QuizQuestion = QuizQuestion(),
+    var questionFilterValidated: QuizQuestionFilter = QuizQuestionFilter(),
+
     var questionResponse: QuizQuestion = QuizQuestion(),
     var questionsResponse: MutableList<QuizQuestion> = mutableListOf(),
-
     )
