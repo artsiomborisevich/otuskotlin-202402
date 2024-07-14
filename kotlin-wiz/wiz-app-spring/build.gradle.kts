@@ -20,7 +20,6 @@ dependencies {
     implementation(libs.kotlinx.serialization.core)
     implementation(libs.kotlinx.serialization.json)
 
-    // Внутренние модели
     implementation(project(":wiz-common"))
     implementation(project(":wiz-app-common"))
     implementation("dev.arborisevich.otuskotlin.kotlinwiz.libs:kotlin-wiz-lib-logging-logback")
@@ -32,12 +31,18 @@ dependencies {
     // biz
     implementation(project(":wiz-biz"))
 
+    // DB
+    implementation(project(":wiz-app-repo-inmemory"))
+    implementation(project(":wiz-app-repo-stubs"))
+    implementation(project(":wiz-app-repo-common"))
+    implementation(project(":wiz-app-repo-postgres"))
+
     // tests
     testImplementation(kotlin("test-junit5"))
     testImplementation(libs.spring.test)
+    testImplementation(libs.spring.mockk)
     testImplementation(libs.mockito.kotlin)
-
-    // stubs
+    testImplementation(project(":wiz-app-repo-stubs"))
     testImplementation(project(":wiz-stubs"))
 }
 

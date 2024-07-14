@@ -11,6 +11,17 @@ management:
         include: info,env
 
 spring:
+  datasource:
+    url: jdbc:postgresql://${QUIZQUESTIONS_HOST:localhost}:${QUIZQUESTIONS_PORT:5433}/${QUIZQUESTIONS_DB:quiz_questions}
+    username: ${QUIZQUESTIONS_USER:postgres}
+    password: ${QUIZQUESTIONS_PASS:quiz-pass}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    open-in-view: false #disable lazy loading
+    hibernate:
+      physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      ddl-auto: none
+    show-sql: true
   jackson:
     default-property-inclusion: non_null
 
@@ -22,3 +33,11 @@ springdoc:
     urls:
       - name: v1
         url: specs-wiz-v1.yaml
+
+psql:
+  schema: public
+  database: "${QUIZQUESTIONS_DB:quiz_questions}"
+  host: "${QUIZQUESTIONS_HOST:localhost}"
+  port: "${QUIZQUESTIONS_PORT:5433}"
+  user: "${QUIZQUESTIONS_USER:postgres}"
+  password: "${QUIZQUESTIONS_PASS:quiz-pass}"

@@ -79,7 +79,7 @@ private fun QuizQuestion.toTransportQuestion(): QuestionResponseObject = Questio
     permissions = permissionsClient.toTransportQuestion(),
 )
 
-private fun List<QuizAnswerOption>.toTransportAnswerOption(): List<AnswerOption>? {
+internal fun List<QuizAnswerOption>.toTransportAnswerOption(): List<AnswerOption>? {
 
     return map { quizAnswerOption ->
         AnswerOption(
@@ -91,7 +91,7 @@ private fun List<QuizAnswerOption>.toTransportAnswerOption(): List<AnswerOption>
         .takeIf { it.isNotEmpty() }
 }
 
-private fun QuizQuestionLevel.toTransportQuestion(): QuestionLevel? = when (this) {
+internal fun QuizQuestionLevel.toTransportQuestion(): QuestionLevel? = when (this) {
     QuizQuestionLevel.BEGINNER -> QuestionLevel.BEGINNER
     QuizQuestionLevel.ADVANCED -> QuestionLevel.ADVANCED
     QuizQuestionLevel.EXPERT -> QuestionLevel.EXPERT
