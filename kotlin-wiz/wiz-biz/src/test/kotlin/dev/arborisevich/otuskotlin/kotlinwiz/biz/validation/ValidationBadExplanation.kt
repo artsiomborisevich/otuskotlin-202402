@@ -32,7 +32,7 @@ fun validationExplanationCorrect(command: QuizCommand, processor: QuizQuestionPr
             ),
             explanation = "explanation",
             level = QuizQuestionLevel.ADVANCED,
-            lock = QuizQuestionLock("123-234-abc-ABC"),
+            lock = QuizQuestionLock("lock"),
         ),
     )
     processor.exec(ctx)
@@ -56,7 +56,7 @@ fun validationExplanationTrim(command: QuizCommand, processor: QuizQuestionProce
             ),
             explanation = "\n\texplanation \n\t",
             level = QuizQuestionLevel.ADVANCED,
-            lock = QuizQuestionLock("123-234-abc-ABC"),
+            lock = QuizQuestionLock("lock"),
         ),
     )
 
@@ -82,7 +82,7 @@ fun validationExplanationEmpty(command: QuizCommand, processor: QuizQuestionProc
             ),
             explanation = "",
             level = QuizQuestionLevel.ADVANCED,
-            lock = QuizQuestionLock("123-234-abc-ABC"),
+            lock = QuizQuestionLock("lock"),
         ),
     )
 
@@ -110,7 +110,7 @@ fun validationExplanationSymbols(command: QuizCommand, processor: QuizQuestionPr
             ),
             explanation = "!@#$%^&*(),.{}",
             level = QuizQuestionLevel.ADVANCED,
-            lock = QuizQuestionLock("123-234-abc-ABC"),
+            lock = QuizQuestionLock("lock"),
         ),
     )
 

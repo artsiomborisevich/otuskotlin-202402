@@ -34,6 +34,7 @@ class BizRepoDeleteTest {
         ),
         explanation = "explanation",
         level = QuizQuestionLevel.ADVANCED,
+        lock = QuizQuestionLock("123-234-abc-ABC"),
     )
 
     private val repo = QuestionRepositoryMock(
@@ -61,7 +62,7 @@ class BizRepoDeleteTest {
     fun repoDeleteSuccessTest() = runTest {
         val questionToUpdate = QuizQuestion(
             id = QuizQuestionId("123"),
-            lock = QuizQuestionLock("123"),
+            lock = QuizQuestionLock("123-234-abc-ABC"),
         )
         val ctx = QuizContext(
             command = command,
@@ -70,6 +71,7 @@ class BizRepoDeleteTest {
             questionRequest = questionToUpdate,
         )
         processor.exec(ctx)
+
         assertEquals(QuizState.FINISHING, ctx.state)
         assertTrue { ctx.errors.isEmpty() }
         assertEquals(initQuestion.id, ctx.questionResponse.id)

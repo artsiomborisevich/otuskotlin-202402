@@ -21,7 +21,7 @@ fun validationLockCorrect(command: QuizCommand, processor: QuizQuestionProcessor
         state = QuizState.NONE,
         workMode = QuizWorkMode.TEST,
         questionRequest = QuizQuestion(
-            id = QuizQuestionId("123-234-abc-ABC"),
+            id = QuizQuestionId("666"),
             text = "abc",
             answer = "answer",
             answerOptions = listOf(
@@ -30,7 +30,7 @@ fun validationLockCorrect(command: QuizCommand, processor: QuizQuestionProcessor
             ),
             explanation = "explanation",
             level = QuizQuestionLevel.ADVANCED,
-            lock = QuizQuestionLock("123-234-abc-ABC"),
+            lock = QuizQuestionLock("lock"),
         ),
     )
 
@@ -46,7 +46,7 @@ fun validationLockTrim(command: QuizCommand, processor: QuizQuestionProcessor) =
         state = QuizState.NONE,
         workMode = QuizWorkMode.TEST,
         questionRequest = QuizQuestion(
-            id = QuizQuestionId("123-234-abc-ABC"),
+            id = QuizQuestionId("666"),
             text = "abc",
             answer = "answer",
             answerOptions = listOf(
@@ -55,7 +55,7 @@ fun validationLockTrim(command: QuizCommand, processor: QuizQuestionProcessor) =
             ),
             explanation = "explanation",
             level = QuizQuestionLevel.ADVANCED,
-            lock = QuizQuestionLock(" \n\t 123-234-abc-ABC \n\t "),
+            lock = QuizQuestionLock(" \n\t lock \n\t "),
         ),
 
         )
@@ -71,7 +71,7 @@ fun validationLockEmpty(command: QuizCommand, processor: QuizQuestionProcessor) 
         state = QuizState.NONE,
         workMode = QuizWorkMode.TEST,
         questionRequest = QuizQuestion(
-            id = QuizQuestionId("123-234-abc-ABC"),
+            id = QuizQuestionId("666"),
             text = "abc",
             answer = "answer",
             answerOptions = listOf(

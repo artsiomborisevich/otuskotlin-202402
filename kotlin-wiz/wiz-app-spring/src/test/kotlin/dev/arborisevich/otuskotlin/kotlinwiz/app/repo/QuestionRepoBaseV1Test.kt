@@ -141,7 +141,7 @@ internal abstract class QuestionRepoBaseV1Test {
     ) {
         webClient
             .post()
-            .uri("/v1/question/$url")
+            .uri("/v1/questions/$url")
             .contentType(MediaType.APPLICATION_JSON)
             .body(BodyInserters.fromValue(requestObj))
             .exchange()

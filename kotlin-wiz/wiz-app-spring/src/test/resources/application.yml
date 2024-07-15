@@ -22,3 +22,11 @@ springdoc:
     urls:
       - name: v1
         url: specs-wiz-v1.yaml
+
+psql:
+  schema: public
+  database: "${QUIZQUESTIONS_DB:quiz-questions}"
+  host: "${QUIZQUESTIONS_HOST:localhost}"
+  port: 5433 #"${QUIZQUESTIONS_PORT:5433}"
+  user: "${QUIZQUESTIONS_USER:postgres}"
+  password: "${QUIZQUESTIONS_PASS:quiz-pass}"

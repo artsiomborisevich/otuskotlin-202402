@@ -34,7 +34,7 @@ fun validationAnswerOptionsCorrect(command: QuizCommand, processor: QuizQuestion
             answerOptions = answerOptions,
             explanation = "explanation",
             level = QuizQuestionLevel.ADVANCED,
-            lock = QuizQuestionLock("123-234-abc-ABC"),
+            lock = QuizQuestionLock("lock"),
         ),
     )
     processor.exec(ctx)
@@ -56,7 +56,7 @@ fun validationNoAnswerOptions(command: QuizCommand, processor: QuizQuestionProce
             answerOptions = emptyList(),
             explanation = "explanation",
             level = QuizQuestionLevel.ADVANCED,
-            lock = QuizQuestionLock("123-234-abc-ABC"),
+            lock = QuizQuestionLock("lock"),
         ),
     )
 
@@ -85,7 +85,7 @@ fun validationAnswerOptionTrim(command: QuizCommand, processor: QuizQuestionProc
             answerOptions = answerOptions,
             explanation = "explanation",
             level = QuizQuestionLevel.ADVANCED,
-            lock = QuizQuestionLock("123-234-abc-ABC"),
+            lock = QuizQuestionLock("lock"),
         ),
     )
 
@@ -116,7 +116,7 @@ fun validationAnswerOptionEmpty(command: QuizCommand, processor: QuizQuestionPro
             ),
             explanation = "explanation",
             level = QuizQuestionLevel.ADVANCED,
-            lock = QuizQuestionLock("123-234-abc-ABC"),
+            lock = QuizQuestionLock("lock"),
         ),
     )
 
@@ -145,7 +145,7 @@ fun validationAnswerOptionSymbols(command: QuizCommand, processor: QuizQuestionP
             ),
             explanation = "explanation",
             level = QuizQuestionLevel.ADVANCED,
-            lock = QuizQuestionLock("123-234-abc-ABC"),
+            lock = QuizQuestionLock("lock"),
         ),
     )
 

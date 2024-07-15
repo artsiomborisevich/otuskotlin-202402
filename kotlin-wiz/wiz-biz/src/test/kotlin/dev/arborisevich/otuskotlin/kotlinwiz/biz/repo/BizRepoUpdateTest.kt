@@ -3,7 +3,14 @@ package dev.arborisevich.otuskotlin.kotlinwiz.biz.repo
 import dev.arborisevich.otuskotlin.kotlinwiz.biz.QuizQuestionProcessor
 import dev.arborisevich.otuskotlin.kotlinwiz.common.QuizContext
 import dev.arborisevich.otuskotlin.kotlinwiz.common.QuizCoreSettings
-import dev.arborisevich.otuskotlin.kotlinwiz.common.models.*
+import dev.arborisevich.otuskotlin.kotlinwiz.common.models.QuizAnswerOption
+import dev.arborisevich.otuskotlin.kotlinwiz.common.models.QuizCommand
+import dev.arborisevich.otuskotlin.kotlinwiz.common.models.QuizQuestion
+import dev.arborisevich.otuskotlin.kotlinwiz.common.models.QuizQuestionId
+import dev.arborisevich.otuskotlin.kotlinwiz.common.models.QuizQuestionLevel
+import dev.arborisevich.otuskotlin.kotlinwiz.common.models.QuizQuestionLock
+import dev.arborisevich.otuskotlin.kotlinwiz.common.models.QuizState
+import dev.arborisevich.otuskotlin.kotlinwiz.common.models.QuizWorkMode
 import dev.arborisevich.otuskotlin.kotlinwiz.common.repo.DbQuestionResponseOk
 import dev.arborisevich.otuskotlin.kotlinwiz.repo.tests.QuestionRepositoryMock
 import kotlinx.coroutines.test.runTest
@@ -48,6 +55,7 @@ class BizRepoUpdateTest {
                     ),
                     explanation = "explanation",
                     level = QuizQuestionLevel.ADVANCED,
+                    lock = QuizQuestionLock("123-234-abc-ABC"),
                 )
             )
         }
@@ -69,7 +77,7 @@ class BizRepoUpdateTest {
             ),
             explanation = "explanation",
             level = QuizQuestionLevel.ADVANCED,
-            lock = QuizQuestionLock("123"),
+            lock = QuizQuestionLock("123-234-abc-ABC"),
         )
         val ctx = QuizContext(
             command = command,

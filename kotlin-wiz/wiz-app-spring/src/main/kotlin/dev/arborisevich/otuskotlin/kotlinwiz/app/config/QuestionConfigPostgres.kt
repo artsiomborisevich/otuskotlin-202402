@@ -2,10 +2,9 @@ package dev.arborisevich.otuskotlin.kotlinwiz.app.config
 
 import dev.arborisevich.otuskotlin.kotlinwiz.repo.postgres.SqlProperties
 import org.springframework.boot.context.properties.ConfigurationProperties
-import org.springframework.context.annotation.Configuration
 
 @ConfigurationProperties(prefix = "psql")
-@Configuration
+//@Configuration
 data class QuestionConfigPostgres(
     var host: String = "localhost",
     var port: Int = 5432,

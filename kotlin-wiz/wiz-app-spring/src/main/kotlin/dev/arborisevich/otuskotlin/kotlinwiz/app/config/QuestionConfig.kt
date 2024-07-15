@@ -10,10 +10,12 @@ import dev.arborisevich.otuskotlin.kotlinwiz.repo.postgres.RepoQuestionSql
 import dev.arborisevich.otuskotlin.kotlinwiz.repository.inmemory.QuestionRepoStub
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 @Configuration
+@EnableConfigurationProperties(QuestionConfigPostgres::class)
 class QuestionConfig(val postgresConfig: QuestionConfigPostgres) {
 
     val logger: Logger = LoggerFactory.getLogger(QuestionConfig::class.java)

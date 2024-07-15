@@ -63,4 +63,5 @@ tasks {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+    environment("QUIZQUESTIONS_DB", "quiz-questions")
 }
