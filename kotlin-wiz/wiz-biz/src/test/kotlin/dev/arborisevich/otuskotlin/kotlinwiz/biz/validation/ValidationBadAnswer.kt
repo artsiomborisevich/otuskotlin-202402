@@ -32,7 +32,7 @@ fun validationAnswerCorrect(command: QuizCommand, processor: QuizQuestionProcess
             ),
             explanation = "explanation",
             level = QuizQuestionLevel.ADVANCED,
-            lock = QuizQuestionLock("123-234-abc-ABC"),
+            lock = QuizQuestionLock("lock"),
         ),
     )
     processor.exec(ctx)
@@ -56,7 +56,7 @@ fun validationAnswerTrim(command: QuizCommand, processor: QuizQuestionProcessor)
             ),
             explanation = "explanation",
             level = QuizQuestionLevel.ADVANCED,
-            lock = QuizQuestionLock("123-234-abc-ABC"),
+            lock = QuizQuestionLock("lock"),
         ),
     )
 

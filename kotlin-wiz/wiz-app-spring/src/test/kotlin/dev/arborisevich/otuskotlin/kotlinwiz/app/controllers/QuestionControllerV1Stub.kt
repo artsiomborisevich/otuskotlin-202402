@@ -61,7 +61,7 @@ internal class QuestionControllerV1Stub {
         )
 
         testStubAd(
-            "/v1/question/create",
+            "/v1/questions/create",
             request,
             QuizContext(questionResponse = QuizQuestionStub.get(), state = QuizState.FINISHING)
                 .toTransportCreate().copy(responseType = "create")
@@ -79,7 +79,7 @@ internal class QuestionControllerV1Stub {
         )
 
         testStubAd(
-            "/v1/question/read",
+            "/v1/questions/read",
             request,
             QuizContext(questionResponse = QuizQuestionStub.get(), state = QuizState.FINISHING)
                 .toTransportRead().copy(responseType = "read")
@@ -108,7 +108,7 @@ internal class QuestionControllerV1Stub {
         )
 
         testStubAd(
-            "/v1/question/update",
+            "/v1/questions/update",
             request,
             QuizContext(questionResponse = QuizQuestionStub.get(), state = QuizState.FINISHING)
                 .toTransportUpdate().copy(responseType = "update")
@@ -128,7 +128,7 @@ internal class QuestionControllerV1Stub {
             )
         )
         testStubAd(
-            "/v1/question/delete",
+            "/v1/questions/delete",
             request,
             QuizContext(questionResponse = QuizQuestionStub.get(), state = QuizState.FINISHING)
                 .toTransportDelete().copy(responseType = "delete")
@@ -146,7 +146,7 @@ internal class QuestionControllerV1Stub {
         )
 
         testStubAd(
-            "/v1/question/search",
+            "/v1/questions/search",
             request,
             QuizContext(
                 questionsResponse = QuizQuestionStub.prepareSearchBeginnerList("", QuizQuestionLevel.BEGINNER)

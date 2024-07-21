@@ -4,6 +4,7 @@ import dev.arborisevich.otuskotlin.kotlinwiz.common.models.QuizAnswerOption
 import dev.arborisevich.otuskotlin.kotlinwiz.common.models.QuizQuestion
 import dev.arborisevich.otuskotlin.kotlinwiz.common.models.QuizQuestionId
 import dev.arborisevich.otuskotlin.kotlinwiz.common.models.QuizQuestionLevel
+import dev.arborisevich.otuskotlin.kotlinwiz.common.models.QuizQuestionLock
 import dev.arborisevich.otuskotlin.kotlinwiz.common.models.QuizQuestionPermissionsClient
 
 object QuizQuestionStubBeginnerQuest {
@@ -22,6 +23,7 @@ object QuizQuestionStubBeginnerQuest {
             answerOptions = answerOptions,
             explanation = "In Kotlin, 'var' is used to declare a mutable variable, while 'val' is used to declare an immutable variable.",
             level = QuizQuestionLevel.BEGINNER,
+            lock = QuizQuestionLock("lock"),
             permissionsClient = mutableSetOf(
                 QuizQuestionPermissionsClient.READ,
                 QuizQuestionPermissionsClient.UPDATE,

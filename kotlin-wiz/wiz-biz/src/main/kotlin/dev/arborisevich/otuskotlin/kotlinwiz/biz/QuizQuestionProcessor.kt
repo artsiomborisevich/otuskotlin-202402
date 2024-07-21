@@ -2,41 +2,16 @@ package dev.arborisevich.otuskotlin.kotlinwiz.biz
 
 import dev.arborisevich.otuskotlin.kotlinwiz.biz.general.initStatus
 import dev.arborisevich.otuskotlin.kotlinwiz.biz.general.operation
-import dev.arborisevich.otuskotlin.kotlinwiz.biz.general.stubs
-import dev.arborisevich.otuskotlin.kotlinwiz.biz.stubs.stubCreateSuccess
-import dev.arborisevich.otuskotlin.kotlinwiz.biz.stubs.stubDbError
-import dev.arborisevich.otuskotlin.kotlinwiz.biz.stubs.stubDeleteSuccess
-import dev.arborisevich.otuskotlin.kotlinwiz.biz.stubs.stubNoCase
-import dev.arborisevich.otuskotlin.kotlinwiz.biz.stubs.stubReadSuccess
-import dev.arborisevich.otuskotlin.kotlinwiz.biz.stubs.stubSearchSuccess
-import dev.arborisevich.otuskotlin.kotlinwiz.biz.stubs.stubUpdateSuccess
-import dev.arborisevich.otuskotlin.kotlinwiz.biz.stubs.stubValidationBadAnswer
-import dev.arborisevich.otuskotlin.kotlinwiz.biz.stubs.stubValidationBadAnswerOptions
-import dev.arborisevich.otuskotlin.kotlinwiz.biz.stubs.stubValidationBadExplanation
-import dev.arborisevich.otuskotlin.kotlinwiz.biz.stubs.stubValidationBadId
-import dev.arborisevich.otuskotlin.kotlinwiz.biz.stubs.stubValidationBadText
-import dev.arborisevich.otuskotlin.kotlinwiz.biz.validation.finishQuestionFilterValidation
-import dev.arborisevich.otuskotlin.kotlinwiz.biz.validation.finishQuestionValidation
-import dev.arborisevich.otuskotlin.kotlinwiz.biz.validation.validateAnswerHasContent
-import dev.arborisevich.otuskotlin.kotlinwiz.biz.validation.validateAnswerNotEmpty
-import dev.arborisevich.otuskotlin.kotlinwiz.biz.validation.validateAnswerOptionHasContent
-import dev.arborisevich.otuskotlin.kotlinwiz.biz.validation.validateAnswerOptionNotEmpty
-import dev.arborisevich.otuskotlin.kotlinwiz.biz.validation.validateAnswerOptionsNotEmpty
-import dev.arborisevich.otuskotlin.kotlinwiz.biz.validation.validateExplanationHasContent
-import dev.arborisevich.otuskotlin.kotlinwiz.biz.validation.validateExplanationNotEmpty
-import dev.arborisevich.otuskotlin.kotlinwiz.biz.validation.validateIdNotEmpty
-import dev.arborisevich.otuskotlin.kotlinwiz.biz.validation.validateIdProperFormat
-import dev.arborisevich.otuskotlin.kotlinwiz.biz.validation.validateLockNotEmpty
-import dev.arborisevich.otuskotlin.kotlinwiz.biz.validation.validateLockProperFormat
-import dev.arborisevich.otuskotlin.kotlinwiz.biz.validation.validateSearchStringLength
-import dev.arborisevich.otuskotlin.kotlinwiz.biz.validation.validateTextHasContent
-import dev.arborisevich.otuskotlin.kotlinwiz.biz.validation.validateTextNotEmpty
-import dev.arborisevich.otuskotlin.kotlinwiz.biz.validation.validation
+import dev.arborisevich.otuskotlin.kotlinwiz.biz.repo.*
+import dev.arborisevich.otuskotlin.kotlinwiz.biz.stubs.*
+import dev.arborisevich.otuskotlin.kotlinwiz.biz.validation.*
 import dev.arborisevich.otuskotlin.kotlinwiz.common.QuizContext
 import dev.arborisevich.otuskotlin.kotlinwiz.common.QuizCoreSettings
 import dev.arborisevich.otuskotlin.kotlinwiz.common.models.QuizCommand
 import dev.arborisevich.otuskotlin.kotlinwiz.common.models.QuizQuestionId
 import dev.arborisevich.otuskotlin.kotlinwiz.common.models.QuizQuestionLock
+import dev.arborisevich.otuskotlin.kotlinwiz.common.models.QuizState
+import dev.arborisevich.otuskotlin.kotlinwiz.core.chain
 import dev.arborisevich.otuskotlin.kotlinwiz.core.rootChain
 import dev.arborisevich.otuskotlin.kotlinwiz.core.worker
 
@@ -47,6 +22,7 @@ class QuizQuestionProcessor(
 
     private val businessChain = rootChain<QuizContext> {
         initStatus("Initializing status")
+        initRepo("Initializing repo")
 
         operation("Creating a question", QuizCommand.CREATE) {
             stubs("Processing stubs") {
@@ -82,6 +58,12 @@ class QuizQuestionProcessor(
 
                 finishQuestionValidation("Completing checks")
             }
+            chain {
+                title = "Logic to save"
+                repoPrepareCreate("Preparing an object for saving")
+                repoCreate("Creating a question in the database")
+            }
+            prepareResult("Preparing a response")
         }
 
         operation("Get a question", QuizCommand.READ) {
@@ -101,6 +83,16 @@ class QuizQuestionProcessor(
 
                 finishQuestionValidation("Completing checks")
             }
+            chain {
+                title = "Logic to read"
+                repoRead("Reading a question from the database")
+                worker {
+                    title = "Preparing a response for Read"
+                    on { state == QuizState.RUNNING }
+                    handle { questionRepoDone = questionRepoRead }
+                }
+            }
+            prepareResult("Preparing a response")
         }
 
         operation("Edit question", QuizCommand.UPDATE) {
@@ -147,6 +139,14 @@ class QuizQuestionProcessor(
 
                 finishQuestionValidation("Completing checks")
             }
+            chain {
+                title = "Logic to update"
+                repoRead("Reading a question from the database")
+                checkLock("Checking consistency using optimistic locking")
+                repoPrepareUpdate("Preparing an object for update")
+                repoUpdate("Updating a question in the database")
+            }
+            prepareResult("Preparing a response")
         }
 
         operation("Delete question", QuizCommand.DELETE)
@@ -172,6 +172,14 @@ class QuizQuestionProcessor(
 
                 finishQuestionValidation("Completing checks")
             }
+            chain {
+                title = "Logic to delete"
+                repoRead("Reading a question from the database")
+                checkLock("Checking consistency using optimistic locking")
+                repoPrepareDelete("Preparing an object for deletion")
+                repoDelete("Removing a question from the database")
+            }
+            prepareResult("Preparing a response")
         }
 
         operation("Search question", QuizCommand.SEARCH)
@@ -191,6 +199,8 @@ class QuizQuestionProcessor(
 
                 finishQuestionFilterValidation("Успешное завершение процедуры валидации")
             }
+            repoSearch("Search a question using filter in DB")
+            prepareResult("Preparing a response")
         }
 
     }.build()

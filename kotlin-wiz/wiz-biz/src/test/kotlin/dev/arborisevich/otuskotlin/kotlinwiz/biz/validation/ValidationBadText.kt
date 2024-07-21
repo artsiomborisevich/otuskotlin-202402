@@ -32,7 +32,7 @@ fun validationTextCorrect(command: QuizCommand, processor: QuizQuestionProcessor
             ),
             explanation = "explanation",
             level = QuizQuestionLevel.ADVANCED,
-            lock = QuizQuestionLock("123-234-abc-ABC"),
+            lock = QuizQuestionLock("lock"),
         ),
     )
     processor.exec(ctx)
@@ -57,7 +57,7 @@ fun validationTextTrim(command: QuizCommand, processor: QuizQuestionProcessor) =
             ),
             explanation = "explanation",
             level = QuizQuestionLevel.ADVANCED,
-            lock = QuizQuestionLock("123-234-abc-ABC"),
+            lock = QuizQuestionLock("lock"),
         ),
     )
 
@@ -82,7 +82,7 @@ fun validationTextEmpty(command: QuizCommand, processor: QuizQuestionProcessor) 
             ),
             explanation = "explanation",
             level = QuizQuestionLevel.ADVANCED,
-            lock = QuizQuestionLock("123-234-abc-ABC"),
+            lock = QuizQuestionLock("lock"),
         ),
     )
 

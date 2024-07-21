@@ -33,7 +33,6 @@ internal class QuestionControllerV1Mock {
     @Autowired
     private lateinit var webClient: WebTestClient
 
-    @Suppress("unused")
     @MockBean
     private lateinit var processor: QuizQuestionProcessor
 
@@ -50,35 +49,35 @@ internal class QuestionControllerV1Mock {
 
     @Test
     fun createQuestion() = testStubAd(
-        "/v1/question/create",
+        "/v1/questions/create",
         QuestionCreateRequest(),
         QuizContext(questionResponse = QuizQuestionStub.get()).toTransportCreate().copy(responseType = "create")
     )
 
     @Test
     fun readQuestion() = testStubAd(
-        "/v1/question/read",
+        "/v1/questions/read",
         QuestionReadRequest(),
         QuizContext(questionResponse = QuizQuestionStub.get()).toTransportRead().copy(responseType = "read")
     )
 
     @Test
     fun updateQuestion() = testStubAd(
-        "/v1/question/update",
+        "/v1/questions/update",
         QuestionUpdateRequest(),
         QuizContext(questionResponse = QuizQuestionStub.get()).toTransportUpdate().copy(responseType = "update")
     )
 
     @Test
     fun deleteQuestion() = testStubAd(
-        "/v1/question/delete",
+        "/v1/questions/delete",
         QuestionDeleteRequest(),
         QuizContext(questionResponse = QuizQuestionStub.get()).toTransportDelete().copy(responseType = "delete")
     )
 
     @Test
     fun searchQuestion() = testStubAd(
-        "/v1/question/search",
+        "/v1/questions/search",
         QuestionSearchRequest(),
         QuizContext(questionsResponse = QuizQuestionStub.prepareSearchBeginnerList(
             "test",

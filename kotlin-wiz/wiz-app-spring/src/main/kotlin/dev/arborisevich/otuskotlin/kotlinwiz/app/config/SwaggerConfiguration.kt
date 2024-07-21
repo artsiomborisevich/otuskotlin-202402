@@ -6,8 +6,7 @@ import org.springdoc.core.providers.ObjectMapperProvider
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
-// swagger url: http://localhost:8080/swagger-ui/index.html
-@Suppress("unused")
+// swagger url: http://localhost:8080/webjars/swagger-ui/index.html
 @Configuration
 class SwaggerConfiguration {
     @Bean

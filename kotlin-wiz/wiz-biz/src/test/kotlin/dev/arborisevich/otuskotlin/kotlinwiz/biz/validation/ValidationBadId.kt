@@ -21,7 +21,7 @@ fun validationIdCorrect(command: QuizCommand, processor: QuizQuestionProcessor) 
         state = QuizState.NONE,
         workMode = QuizWorkMode.TEST,
         questionRequest = QuizQuestion(
-            id = QuizQuestionId("123-234-abc-ABC"),
+            id = QuizQuestionId("666"),
             text = "abc",
             answer = "answer",
             answerOptions = listOf(
@@ -30,12 +30,13 @@ fun validationIdCorrect(command: QuizCommand, processor: QuizQuestionProcessor) 
             ),
             explanation = "explanation",
             level = QuizQuestionLevel.ADVANCED,
-            lock = QuizQuestionLock("123-234-abc-ABC"),
+            lock = QuizQuestionLock("lock"),
         ),
     )
 
     processor.exec(ctx)
 
+    println(ctx.errors)
     assertEquals(0, ctx.errors.size)
     assertNotEquals(QuizState.FAILING, ctx.state)
 }
@@ -46,7 +47,7 @@ fun validationIdTrim(command: QuizCommand, processor: QuizQuestionProcessor) = r
         state = QuizState.NONE,
         workMode = QuizWorkMode.TEST,
         questionRequest = QuizQuestion(
-            id = QuizQuestionId(" \n\t 123-234-abc-ABC \n\t "),
+            id = QuizQuestionId(" \n\t 666 \n\t "),
             text = "abc",
             answer = "answer",
             answerOptions = listOf(
@@ -55,7 +56,7 @@ fun validationIdTrim(command: QuizCommand, processor: QuizQuestionProcessor) = r
             ),
             explanation = "explanation",
             level = QuizQuestionLevel.ADVANCED,
-            lock = QuizQuestionLock("123-234-abc-ABC"),
+            lock = QuizQuestionLock("lock"),
         ),
     )
     processor.exec(ctx)
@@ -79,7 +80,7 @@ fun validationIdEmpty(command: QuizCommand, processor: QuizQuestionProcessor) = 
             ),
             explanation = "explanation",
             level = QuizQuestionLevel.ADVANCED,
-            lock = QuizQuestionLock("123-234-abc-ABC"),
+            lock = QuizQuestionLock("lock"),
         ),
     )
     processor.exec(ctx)

@@ -7,6 +7,7 @@ import dev.arborisevich.otuskotlin.kotlinwiz.common.models.QuizQuestionFilter
 import dev.arborisevich.otuskotlin.kotlinwiz.common.models.QuizRequestId
 import dev.arborisevich.otuskotlin.kotlinwiz.common.models.QuizState
 import dev.arborisevich.otuskotlin.kotlinwiz.common.models.QuizWorkMode
+import dev.arborisevich.otuskotlin.kotlinwiz.common.repo.IRepoQuestion
 import dev.arborisevich.otuskotlin.kotlinwiz.common.stubs.QuizStubs
 import kotlinx.datetime.Instant
 
@@ -30,6 +31,12 @@ data class QuizContext(
 
     var questionValidated: QuizQuestion = QuizQuestion(),
     var questionFilterValidated: QuizQuestionFilter = QuizQuestionFilter(),
+
+    var questionRepo: IRepoQuestion = IRepoQuestion.NONE,
+    var questionRepoRead: QuizQuestion = QuizQuestion(), // What we read from the repository
+    var questionRepoPrepare: QuizQuestion = QuizQuestion(), // What we are preparing for saving in the database
+    var questionRepoDone: QuizQuestion = QuizQuestion(),  // Result from DB
+    var questionsRepoDone: MutableList<QuizQuestion> = mutableListOf(),
 
     var questionResponse: QuizQuestion = QuizQuestion(),
     var questionsResponse: MutableList<QuizQuestion> = mutableListOf(),
