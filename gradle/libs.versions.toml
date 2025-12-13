@@ -68,7 +68,7 @@ logger-fluentd = { module = "org.fluentd:fluent-logger", version = "0.3.4" }
 kafka-client = { module = "org.apache.kafka:kafka-clients", version = "3.7.0" }
 
 # Databases
-db-cache4k = "io.github.reactivecircus.cache4k:cache4k:0.13.0"
+db-cache4k = "io.github.reactivecircus.cache4k:cache4k:0.14.0"
 db-postgres = "org.postgresql:postgresql:42.7.3"
 db-hikari = "com.zaxxer:HikariCP:5.1.0"
 db-exposed-core = { module = "org.jetbrains.exposed:exposed-core", version.ref = "exposed" }
