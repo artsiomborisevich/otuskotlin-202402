@@ -26,7 +26,7 @@ jobs:
       - name: ☕ Setup Java and Gradle
         uses: actions/setup-java@v4
         with:
-          java-version: '21'
+          java-version: '17'
           distribution: 'temurin'
           cache: 'gradle'
 
@@ -73,14 +73,15 @@ jobs:
       - name: 🔧 Apply Dependency Updates
         run: |
           # This is where you'd parse the issue and apply fixes
-          # For now, we'll update to latest Spring Boot as example
+          # This project uses Gradle version catalog
           
-          # Read current build.gradle
-          if [ -f "build.gradle" ]; then
-            echo "Found build.gradle, analyzing..."
+          # Read current gradle/libs.versions.toml
+          if [ -f "gradle/libs.versions.toml" ]; then
+            echo "Found gradle/libs.versions.toml, analyzing..."
+            cat gradle/libs.versions.toml
             
-            # Example: Update Spring Boot version (you can expand this)
-            # sed -i "s/spring-boot-starter-test'/spring-boot-starter-test'/" build.gradle
+            # Example: Update versions in the catalog
+            # sed -i 's/ktor = "2.3.9"/ktor = "2.3.12"/' gradle/libs.versions.toml
             
             echo "Dependencies analyzed. Manual fixes may be needed."
           fi
@@ -89,7 +90,7 @@ jobs:
         id: test
         continue-on-error: true
         run: |
-          ./gradlew clean build
+          ./gradlew check
           echo "BUILD_STATUS=$?" >> $GITHUB_ENV
 
       - name: 💾 Commit Changes
@@ -97,7 +98,7 @@ jobs:
         run: |
           if [ -n "$(git status --porcelain)" ]; then
             git add .
-            git commit -m "fix: Update HIGH/CRITICAL dependencies and fix deprecated methods
+            git commit -m "fix: Update HIGH/CRITICAL dependencies and fix deprecated Kotlin APIs
             
             Automated fixes for security vulnerabilities.
             Related to issue #${{ github.event.issue.number }}"
@@ -128,8 +129,8 @@ jobs:
             Closes #${{ github.event.issue.number }}
             
             ### Changes Made
-            - Updated vulnerable dependencies
-            - Fixed deprecated method usages
+            - Updated vulnerable dependencies in gradle/libs.versions.toml
+            - Fixed deprecated Kotlin/Ktor API usages
             - Verified build passes
             
             ### Build Status

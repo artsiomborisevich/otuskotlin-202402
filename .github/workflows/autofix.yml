@@ -1,192 +1,194 @@
-name: 🤖 Auto-Fix Dependencies
+name: Copilot autofix
 
 on:
   workflow_dispatch:
-    inputs:
-      scan_type:
-        description: 'Type of scan to perform'
-        required: false
-        default: 'security'
-        type: choice
-        options:
-          - security
-          - all
   schedule:
-    - cron: '0 9 * * 1'  # Every Monday at 9 AM UTC
-  push:
-    branches:
-      - main
+    - cron: '0 9 * * 1'  # Run every Monday at 9 AM UTC
 
 permissions:
-  contents: write
-  pull-requests: write
-  issues: write
-  security-events: read
+  issues: write           # Needed for github.rest.issues.create
+  security-events: read   # Needed for dependabot alerts API
 
 jobs:
-  scan-and-fix:
+  fix-security-issues:
     runs-on: ubuntu-latest
-
     steps:
-      - name: ⬇️ Checkout Repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: ☕ Setup Java and Gradle
-        uses: actions/setup-java@v4
-        with:
-          java-version: '21'
-          distribution: 'temurin'
-          cache: 'gradle'
-
-      - name: 🔒 Grant Execute Permission to gradlew
-        run: chmod +x ./gradlew
-
-      - name: 🔍 Check for Dependabot Alerts
-        id: check_alerts
+      - name: Scan and Assign
+        id: create_issue
         uses: actions/github-script@v7
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: '${{ secrets.DEPENDABOT_ALERTS_TOKEN }}'
           script: |
-            try {
-              const alerts = await github.rest.dependabot.listAlertsForRepo({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                state: 'open',
-                severity: 'high,critical'
-              });
-              
-              const highCritical = alerts.data.filter(a => 
-                a.security_advisory.severity === 'high' || 
-                a.security_advisory.severity === 'critical'
-              );
-              
-              core.setOutput('has_alerts', highCritical.length > 0);
-              core.setOutput('alert_count', highCritical.length);
-              core.setOutput('alerts', JSON.stringify(highCritical));
-              
-              console.log(`Found ${highCritical.length} HIGH/CRITICAL alerts`);
-              
-              return highCritical.length > 0;
-            } catch (error) {
-              console.log('Could not fetch alerts:', error.message);
-              core.setOutput('has_alerts', false);
-              return false;
-            }
-
-      - name: 📦 Update Dependencies
-        if: steps.check_alerts.outputs.has_alerts == 'true'
-        id: update_deps
-        run: |
-          # Create a new branch
-          BRANCH_NAME="copilot-autofix-$(date +%Y%m%d-%H%M%S)"
-          echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
-          git checkout -b $BRANCH_NAME
-          
-          # Configure git
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          
-          echo "✅ Branch created: $BRANCH_NAME"
-          echo "branch=$BRANCH_NAME" >> $GITHUB_OUTPUT
-
-      - name: 🔧 Analyze and Fix Vulnerabilities
-        if: steps.check_alerts.outputs.has_alerts == 'true'
-        run: |
-          echo "🔍 Analyzing vulnerabilities..."
-          
-          # Parse alerts and extract package information
-          ALERTS='${{ steps.check_alerts.outputs.alerts }}'
-          echo "$ALERTS" | jq -r '.[] | "- \(.security_advisory.summary) (\(.security_advisory.severity))"' || echo "No specific alerts to display"
-          
-          echo "📝 Vulnerability fixes would be applied here"
-          echo "For Gradle projects, consider using:"
-          echo "  - Dependabot PRs"
-          echo "  - gradle-versions-plugin"
-          echo "  - OWASP dependency check"
-
-      - name: 🧪 Run Tests
-        if: steps.check_alerts.outputs.has_alerts == 'true'
-        id: test
-        continue-on-error: true
-        run: |
-          ./gradlew clean test
-          echo "test_result=$?" >> $GITHUB_OUTPUT
-
-      - name: 💾 Commit and Push Changes
-        if: steps.check_alerts.outputs.has_alerts == 'true'
-        id: commit
-        run: |
-          if [ -n "$(git status --porcelain)" ]; then
-            git add .
-            git commit -m "fix: Update dependencies to fix HIGH/CRITICAL vulnerabilities
-            
-            Automated security fixes based on Dependabot alerts.
-            Alert count: ${{ steps.check_alerts.outputs.alert_count }}"
-            
-            git push origin ${{ env.BRANCH_NAME }}
-            echo "has_changes=true" >> $GITHUB_OUTPUT
-          else
-            echo "has_changes=false" >> $GITHUB_OUTPUT
-            echo "⚠️ No changes to commit"
-          fi
-
-      - name: 🎯 Create Pull Request
-        if: steps.commit.outputs.has_changes == 'true'
-        uses: actions/github-script@v7
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const alerts = JSON.parse('${{ steps.check_alerts.outputs.alerts }}');
-            const alertsList = alerts.map(a => 
-              `- **${a.security_advisory.severity.toUpperCase()}**: ${a.security_advisory.summary}\n  Package: \`${a.security_vulnerability.package.name}\``
-            ).join('\n');
-            
-            const pr = await github.rest.pulls.create({
+            // 1. GET ALERTS (The Dependabot API)
+            const alerts = await github.request('GET /repos/{owner}/{repo}/dependabot/alerts', {
               owner: context.repo.owner,
               repo: context.repo.repo,
-              title: '🤖 Fix HIGH/CRITICAL Security Vulnerabilities',
-              head: process.env.BRANCH_NAME,
-              base: 'main',
-              body: `## 🛡️ Automated Security Fixes
-            
-            This PR fixes **${{ steps.check_alerts.outputs.alert_count }}** HIGH/CRITICAL security vulnerabilities.
-            
-            ### 🚨 Vulnerabilities Fixed
-            ${alertsList}
-            
-            ### 🧪 Test Results
-            ${process.env.test_result === '0' ? '✅ All tests passed' : '⚠️ Some tests failed - manual review needed'}
-            
-            ### 📋 Next Steps
-            1. Review the dependency updates
-            2. Check if any code changes are needed
-            3. Merge if everything looks good
-            
-            ---
-            🤖 _This PR was automatically generated by the Auto-Fix workflow_`
+              state: 'open'
             });
             
-            console.log(`✅ Pull Request created: ${pr.data.html_url}`);
+            if (alerts.data.length === 0) {
+              console.log("No alerts found.");
+              return;
+            }
+            
+            // 2. FILTER HIGH AND CRITICAL SEVERITY ALERTS
+            const criticalAlerts = alerts.data.filter(alert => {
+              const severity = alert.security_advisory.severity.toLowerCase();
+              return severity === 'high' || severity === 'critical';
+            });
+            
+            if (criticalAlerts.length === 0) {
+              console.log("No HIGH or CRITICAL severity alerts found.");
+              return;
+            }
+            
+            // 3. FORMAT THE REPORT
+            const report = criticalAlerts.map(alert => {
+              const packageName = alert.dependency.package.name;
+              const ecosystem = alert.dependency.package.ecosystem;
+              const severity = alert.security_advisory.severity.toUpperCase();
+              const cveId = alert.security_advisory.cve_id || 'N/A';
+              const summary = alert.security_advisory.summary;
+              const description = alert.security_advisory.description;
+              const vulnerableVersion = alert.security_vulnerability.vulnerable_version_range;
+            
+              const patchVer = alert.security_vulnerability.first_patched_version
+                ? alert.security_vulnerability.first_patched_version.identifier
+                : "No fix version available yet";
+            
+              return `### 📦 ${packageName} (${ecosystem})\n` +
+              `**Severity:** ${severity} | **CVE:** ${cveId}\n` +
+              `**Vulnerable Version:** ${vulnerableVersion}\n` +
+              `**Summary:** ${summary}\n` +
+              `**Description:** ${description}\n` +
+              `**Required Fix:** Upgrade to version **${patchVer}** or later.\n`;
+            }).join('\n---\n');
+            
+            // 4. CREATE ISSUE (The Issues API)
+            const issueBody = `@copilot Please fix the following HIGH and CRITICAL security vulnerabilities. Follow these steps:
 
-      - name: 📊 Summary Report
-        if: always()
-        run: |
-          echo "## 🤖 Auto-Fix Summary" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "- **Alerts Found**: ${{ steps.check_alerts.outputs.alert_count }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **Changes Made**: ${{ steps.commit.outputs.has_changes || 'false' }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **Test Result**: ${{ steps.test.outputs.test_result == '0' && '✅ Passed' || '⚠️ Failed' }}" >> $GITHUB_STEP_SUMMARY
-          
-          if [ "${{ steps.check_alerts.outputs.has_alerts }}" != "true" ]; then
-            echo "" >> $GITHUB_STEP_SUMMARY
-            echo "✅ **No HIGH/CRITICAL vulnerabilities found!**" >> $GITHUB_STEP_SUMMARY
-          fi
+            **MISSION CRITICAL PROTOCOL:**
+            You are FORBIDDEN from committing any code until you have verified the build passes AND all deprecated methods are fixed. Follow these steps strictly in order:
 
-      - name: ⚠️ Report No Alerts
-        if: steps.check_alerts.outputs.has_alerts != 'true'
-        run: |
-          echo "✅ No HIGH/CRITICAL security alerts found"
-          echo "Your dependencies are up to date!"
+            1. **PHASE 1: INSPECTION**
+               - Examine the \`gradle/libs.versions.toml\` file to understand current dependency versions (this project uses Gradle version catalog)
+               - Review the \`build.gradle.kts\` files in kotlin-wiz modules
+               - Review the security alerts below
+               - Run: \`./gradlew compileKotlin compileTestKotlin\` to detect ALL compilation issues
+               - Check for deprecated Kotlin APIs and outdated dependencies
+               - Document all warnings found
+            
+            2. **PHASE 2: UPGRADE STRATEGY**
+               - Update dependencies with HIGH or CRITICAL vulnerabilities to the patched versions specified below
+               - Identify ALL deprecated methods/APIs from Kotlin compilation warnings
+               - This is a Kotlin multi-module project with:
+                 * Ktor server framework
+                 * Kotlin coroutines
+                 * Exposed ORM
+                 * Version catalog in \`gradle/libs.versions.toml\`
+               - Plan refactoring strategy for each deprecated usage
+               - Check for breaking changes in Kotlin, Ktor, or coroutines updates
+            
+            3. **PHASE 3: UPGRADE & REFACTOR**
+               - Update \`gradle/libs.versions.toml\` with new dependency versions
+               - **MANDATORY**: Search and fix ALL deprecated Kotlin API usages throughout the codebase:
+                 1. Check for deprecated coroutines APIs
+                 2. Check for deprecated Ktor APIs (especially if upgrading from 2.x to newer versions)
+                 3. Check for deprecated Kotlin standard library functions
+                 4. Fix any other deprecated APIs identified in Phase 1
+               - Verify NO deprecation warnings remain: \`./gradlew compileKotlin compileTestKotlin 2>&1 | grep -i "warning"\`
+            
+            4. **PHASE 4: THE GATEKEEPER (VERIFICATION)**
+               - Run the command: **\`./gradlew check\`** (this runs build and tests for kotlin-wiz)
+               - **READ THE OUTPUT.**
+               - **IF BUILD FAILS:** You are PROHIBITED from committing. You must:
+                 1. Analyze the error log
+                 2. Read the failing test file
+                 3. Fix the compilation error or test failure
+                 4. **LOOP:** Run \`./gradlew check\` again. Repeat until it passes.
+               - **VERIFY NO DEPRECATION WARNINGS**: Run \`./gradlew compileKotlin compileTestKotlin 2>&1 | grep -i "warning"\`
+               - Confirm output shows **0 warnings**
+            
+            5. **PHASE 5: REPORTING & COMMIT**
+               - List ALL changes made:
+                 * Dependencies updated in gradle/libs.versions.toml (package → version)
+                 * Deprecated Kotlin/Ktor APIs fixed (old → new)
+                 * Files modified
+               - ONLY after:
+                 ✅ \`./gradlew check\` prints 'BUILD SUCCESSFUL'
+                 ✅ No deprecation warnings
+                 ✅ All tests pass
+               - Commit with message: 'fix: Update HIGH/CRITICAL dependencies and fix deprecated Kotlin APIs'
 
+            ## 📋 Mandatory Checklist Before Commit
+
+            - [ ] All dependencies updated in gradle/libs.versions.toml per alerts below
+            - [ ] Ran deprecation check: \`./gradlew compileKotlin compileTestKotlin\`
+            - [ ] Found and fixed ALL deprecated Kotlin/Ktor API usages
+            - [ ] Updated all affected imports
+            - [ ] Build passes: \`./gradlew check\`
+            - [ ] Zero deprecation warnings
+            - [ ] All tests green
+
+            ## Security Alerts to Fix
+
+            ${report}`;
+            
+            const newIssue = await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: "🚨 Automated Security Fixes Required (HIGH/CRITICAL)",
+              body: issueBody
+            });
+            
+            console.log(`Issue created: ${newIssue.data.html_url}`);
+            // 4. ASSIGN COPILOT (GraphQL)
+            // We need the Issue Node ID and Copilot's Actor Node ID
+            const issueNodeId = newIssue.data.node_id;
+            // Query to find the Copilot bot ID in this repository
+            const actorQuery = `
+              query($owner: String!, $repo: String!) {
+                repository(owner: $owner, name: $repo) {
+                  suggestedActors(capabilities: [CAN_BE_ASSIGNED], first: 100) {
+                    nodes {
+                      login
+                    __typename
+                      ... on Bot { id }
+                      ... on User { id }
+                    }
+                  }
+                }
+              }
+            `;
+            const actorResult = await github.graphql(actorQuery, {
+              owner: context.repo.owner,
+              repo: context.repo.repo
+            });
+            const copilotActor = actorResult.repository.suggestedActors.nodes.find(a => a.login === 'copilot-swe-agent');
+            if (copilotActor) {
+              console.log(`Found Copilot Actor ID: ${copilotActor.id}`);
+            
+              // Mutation to assign Copilot
+              const assignMutation = `
+                mutation($assignableId: ID!, $actorIds: [ID!]!) {
+                  replaceActorsForAssignable(input: {assignableId: $assignableId, actorIds: $actorIds}) {
+                    assignable {
+                       ... on Issue {
+                         id
+                         assignees(first: 5) {
+                           nodes { login }
+                         }
+                       }
+                    }
+                  }
+                }
+              `;
+              await github.graphql(assignMutation, {
+                assignableId: issueNodeId,
+                actorIds: [copilotActor.id]
+              });
+            
+              console.log("Successfully assigned Copilot to the issue.");
+            } else {
+              console.warn("Could not find 'copilot' in suggested actors. Ensure Copilot is enabled for this repository.");
+            }
