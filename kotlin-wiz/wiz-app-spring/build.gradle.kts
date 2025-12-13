@@ -6,6 +6,11 @@ plugins {
     id("build-jvm")
 }
 
+// Override managed versions for security fixes
+ext["netty.version"] = libs.versions.netty.get()
+ext["jackson-bom.version"] = libs.versions.jackson.get()
+ext["json-smart.version"] = libs.versions.json.smart.get()
+
 dependencies {
     implementation(libs.spring.actuator)
     implementation(libs.spring.webflux)

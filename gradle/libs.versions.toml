@@ -7,7 +7,9 @@ kotlix-datetime = "0.5.0"
 kotlinx-serialization = "1.6.3"
 
 openapi-generator = "7.3.0"
-jackson = "2.16.1"
+jackson = "2.17.2"
+netty = "4.1.124.Final"
+json-smart = "2.5.2"
 
 binary-compability-validator = "0.13.2"
 owasp-version = "8.0.0"
@@ -22,7 +24,8 @@ muschko = "9.4.0"
 
 #Frameworks
 ktor = "2.3.9"
-spring-boot = "3.2.0"
+spring-boot = "3.3.5"
+spring-framework = "6.1.14"
 
 liquibase = "4.27.0"
 exposed = "0.50.0"
@@ -56,6 +59,13 @@ jackson-datatype = { module = "com.fasterxml.jackson.datatype:jackson-datatype-j
 
 uuid = "com.benasher44:uuid:0.8.4"
 owasp = { module = "org.owasp:dependency-check-gradle", version.ref = "owasp-version" }
+
+# Netty - security fix for CVE-2025-24970 and CVE-2025-55163
+netty-handler = { module = "io.netty:netty-handler", version.ref = "netty" }
+netty-codec-http2 = { module = "io.netty:netty-codec-http2", version.ref = "netty" }
+
+# JSON Smart - security fix for CVE-2024-57699
+json-smart = { module = "net.minidev:json-smart", version.ref = "json-smart" }
 
 # Logging
 logback = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
