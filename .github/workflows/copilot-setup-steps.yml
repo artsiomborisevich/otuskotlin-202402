@@ -37,12 +37,15 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: 📋 List Current Dependencies
-        run: ./gradlew dependencies --configuration runtimeClasspath
+        run: |
+          echo "📦 Listing dependencies for all subprojects..."
+          ./gradlew dependencies --configuration compileClasspath || true
+          echo "✅ Dependencies listed"
 
       - name: ⚠️ Check for Deprecation Warnings
         run: |
           echo "Checking for deprecated method usages..."
-          ./gradlew compileJava compileTestJava -Xlint:deprecation || true
+          ./gradlew compileKotlin compileTestKotlin -Pkotlin.compiler.allWarningsAsErrors=false || true
           echo "Note: Review warnings above for deprecated APIs"
 
       - name: 🧪 Run Tests to Establish Baseline

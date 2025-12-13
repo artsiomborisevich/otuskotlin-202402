@@ -36,7 +36,7 @@ jobs:
       - name: ☕ Setup Java and Gradle
         uses: actions/setup-java@v4
         with:
-          java-version: '21'
+          java-version: '17'
           distribution: 'temurin'
           cache: 'gradle'
 
@@ -57,8 +57,8 @@ jobs:
                 severity: 'high,critical'
               });
               
-              const highCritical = alerts.data.filter(a => 
-                a.security_advisory.severity === 'high' || 
+              const highCritical = alerts.data.filter(a =>
+                a.security_advisory.severity === 'high' ||
                 a.security_advisory.severity === 'critical'
               );
               
@@ -67,7 +67,7 @@ jobs:
               core.setOutput('alerts', JSON.stringify(highCritical));
               
               console.log(`Found ${highCritical.length} HIGH/CRITICAL alerts`);
-              
+
               return highCritical.length > 0;
             } catch (error) {
               console.log('Could not fetch alerts:', error.message);
@@ -139,7 +139,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const alerts = JSON.parse('${{ steps.check_alerts.outputs.alerts }}');
-            const alertsList = alerts.map(a => 
+            const alertsList = alerts.map(a =>
               `- **${a.security_advisory.severity.toUpperCase()}**: ${a.security_advisory.summary}\n  Package: \`${a.security_vulnerability.package.name}\``
             ).join('\n');
             
