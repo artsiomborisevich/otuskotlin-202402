@@ -18,8 +18,6 @@ include("m1l5-dsl")
 include("m2l1-coroutines")
 include("m2l2-flows")
 include("m2l3-kmp")
-include("m2l4-1-interop")
-include("m2l4-2-jni")
 include("m2l5-gradle")
 
 include(":m2l5-gradle:sub1:ssub1", ":m2l5-gradle:sub1:ssub2")
