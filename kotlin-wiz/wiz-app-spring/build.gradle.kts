@@ -6,6 +6,10 @@ plugins {
     id("build-jvm")
 }
 
+// Security fixes: override transitive dependency versions
+ext["netty.version"] = "4.1.124.Final"
+ext["json-smart.version"] = "2.5.2"
+
 dependencies {
     implementation(libs.spring.actuator)
     implementation(libs.spring.webflux)

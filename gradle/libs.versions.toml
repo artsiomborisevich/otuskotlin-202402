@@ -22,7 +22,9 @@ muschko = "9.4.0"
 
 #Frameworks
 ktor = "2.3.9"
-spring-boot = "3.2.0"
+spring-boot = "3.3.6"
+netty = "4.1.124.Final"
+json-smart = "2.5.2"
 
 liquibase = "4.27.0"
 exposed = "0.50.0"
@@ -114,6 +116,11 @@ spring-webflux = { module = "org.springframework.boot:spring-boot-starter-webflu
 spring-webflux-ui = { module = "org.springdoc:springdoc-openapi-starter-webflux-ui", version = "2.3.0" }
 spring-test = { module = "org.springframework.boot:spring-boot-starter-test" }
 spring-mockk = "com.ninja-squad:springmockk:4.0.2"
+
+# Security fixes - explicit version overrides
+netty-codec-http2 = { module = "io.netty:netty-codec-http2", version.ref = "netty" }
+netty-handler = { module = "io.netty:netty-handler", version.ref = "netty" }
+json-smart = { module = "net.minidev:json-smart", version.ref = "json-smart" }
 
 [bundles]
 kotest = ["kotest-junit5", "kotest-core", "kotest-datatest", "kotest-property"]
