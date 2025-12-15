@@ -2,8 +2,8 @@ name: Copilot autofix
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '0 9 * * 1'  # Run every Monday at 9 AM UTC
+  # schedule:
+  #   - cron: '0 9 * * 1'  # Run every Monday at 9 AM UTC
 
 permissions:
   issues: write           # Needed for github.rest.issues.create
