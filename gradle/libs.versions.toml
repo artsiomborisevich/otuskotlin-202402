@@ -117,11 +117,6 @@ spring-webflux-ui = { module = "org.springdoc:springdoc-openapi-starter-webflux-
 spring-test = { module = "org.springframework.boot:spring-boot-starter-test" }
 spring-mockk = "com.ninja-squad:springmockk:4.0.2"
 
-# Security fixes - explicit version overrides
-netty-codec-http2 = { module = "io.netty:netty-codec-http2", version.ref = "netty" }
-netty-handler = { module = "io.netty:netty-handler", version.ref = "netty" }
-json-smart = { module = "net.minidev:json-smart", version.ref = "json-smart" }
-
 [bundles]
 kotest = ["kotest-junit5", "kotest-core", "kotest-datatest", "kotest-property"]
 exposed = ["db-exposed-core", "db-exposed-dao", "db-exposed-jdbc"]
