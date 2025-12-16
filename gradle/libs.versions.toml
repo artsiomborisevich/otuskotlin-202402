@@ -22,7 +22,10 @@ muschko = "9.4.0"
 
 #Frameworks
 ktor = "2.3.9"
-spring-boot = "3.2.0"
+spring-boot = "3.3.6"
+# Security fixes: version overrides for Spring Boot managed dependencies
+netty = "4.1.124.Final"
+json-smart = "2.5.2"
 
 liquibase = "4.27.0"
 exposed = "0.50.0"
