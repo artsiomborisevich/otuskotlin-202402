@@ -59,7 +59,7 @@ owasp = { module = "org.owasp:dependency-check-gradle", version.ref = "owasp-ver
 
 # Logging
 logback = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
-logback-appenders = { module = "com.sndyuk:logback-more-appenders", version = "1.8.8" }
+logback-appenders = { module = "com.sndyuk:logback-more-appenders", version = "1.8.9" }
 logback-logstash = { module = "net.logstash.logback:logstash-logback-encoder", version = "7.4" }
 kermit = { module = "co.touchlab:kermit", version.ref = "kermit" }
 logger-fluentd = { module = "org.fluentd:fluent-logger", version = "0.3.4" }
