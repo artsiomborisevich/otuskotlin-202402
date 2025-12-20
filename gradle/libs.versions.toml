@@ -10,7 +10,7 @@ openapi-generator = "7.3.0"
 jackson = "2.16.1"
 
 binary-compability-validator = "0.13.2"
-owasp-version = "8.0.0"
+owasp-version = "10.0.3"
 
 logback = "1.5.3"
 kotest = "5.8.0"
